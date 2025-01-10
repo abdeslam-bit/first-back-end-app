@@ -1,25 +1,33 @@
-const express = require('express')
-const app = express()
-const mongoose = require("mongoose")
+const express = require('express');
+const app = express();
+const mongoose = require("mongoose");
 
-mongoose.connect("mongodb+srv://abdellanimohamedabdeslam:GjgAnRea@hHUsrdV@myfirstdatabase.q2ewp.mongodb .net/?retryWrites=true&w=majority&appName=myFirstDataBase")
-  .then(() => console.log("Connected successfully to myFirstDataBase"))
-  .catch((error) => console.error("Connection error:", error));
-
-// mongodb+srv://abdellanimohamedabdeslam:GjgAnRea@hHUsrdV@myfirstdatabase.q2ewp.mongodb .net/?retryWrites=true&w=majority&appName=myFirstDataBase
-app.use(express.json())
-
-app.get('/get',(req,res)=>{
-    let number="--";
-    for(let i=0;i<100;i++){
-        number+=i+"--"
+async function getMongoose() {
+    try {
+        const url = await mongoose.connect("mongodb+srv://abdellanimohamedabdeslam:<db_password>@myfirstdatabase.q2ewp.mongodb.net/?retryWrites=true&w=majority&appName=myFirstDataBase");
+        console.log("Connected successfully to myFirstDataBase");
+    } catch (error) {
+        console.error("Connection error:", error);
     }
-    res.render("index.ejs",{
-        name : "abdeslam",
-        job : req.query.job,
-        number3:number
-    })
-})
+}
+getMongoose();
 
-app.listen(3000,()=>{
-})
+app.set("view engine", "ejs");
+app.set("views", "./views");
+app.use(express.json());
+
+app.get('/get', (req, res) => {
+    let number = "--";
+    for (let i = 0; i < 100; i++) {
+        number += i + "--";
+    }
+    res.render("index.ejs", {
+        name: "abdeslam",
+        job: req.query.job,
+        number3: number
+    });
+});
+
+app.listen(3000, () => {
+    console.log("Server is running on port 3000");
+});
